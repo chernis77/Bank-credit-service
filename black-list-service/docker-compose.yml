@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  pg_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=blacklist_db
+      - POSTGRES_USER=ivan
+      - POSTGRES_PASSWORD=ivan
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5437:5432"
+volumes:
+  db:
