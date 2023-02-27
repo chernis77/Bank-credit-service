@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class )
+//@RunWith(MockitoJUnitRunner.class )
 @SuppressWarnings("unchecked")
 public class ValidateFieldTest {
 
@@ -23,9 +23,20 @@ public class ValidateFieldTest {
     @Mock
     private FillFormDTO fillFormDTO;
 
+    private final String TEST_FIELD = "gfds5";
     @Test
-    public void firstNameValidateTest(){
-        Mockito.when(fillFormDTO.getFirstName()).thenReturn("gfds5");
+    public void checkNonValidateTest(){
+        Mockito.when(fillFormDTO.getFirstName()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getSurName()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getLastName()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getPassportNum()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getIsEmployed()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getTimeOfEmployment()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getSalary()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getLoanPayments()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getCreditAmount()).thenReturn(TEST_FIELD);
+        Mockito.when(fillFormDTO.getCreditTerm()).thenReturn(TEST_FIELD);
+
         ResponseDTO responseDTO = formService.validateField(fillFormDTO);
         Assert.assertTrue(responseDTO.getMessage() != null);
 

@@ -43,12 +43,13 @@ public class FormServiceImpl implements FormService {
 
         ResponseDTO responseDTO = new ResponseDTO();
 
-        if (form == null) {
-            responseDTO.setMessage("Ошибка заполнения формы");
-        }
+//        if (form == null) {
+//            responseDTO.setMessage("Ошибка заполнения формы");
+//        }
 
         if (form.getFirstName().matches(".*[^А-Яа-яЁё].*") == true) {
             responseDTO.setMessage("В поле firstName содержатся некорректные символы");
+
             //  responseDTO.setStatusCode(HttpStatus.SC_FORBIDDEN);
         }
 
