@@ -23,7 +23,7 @@ public class ValidateFieldTest {
     @Mock
     private FillFormDTO fillFormDTO;
 
-    private final String TEST_FIELD = "gfds5";
+    private final String TEST_FIELD = "gfds568";
     @Test
     public void checkNonValidateTest(){
         Mockito.when(fillFormDTO.getFirstName()).thenReturn(TEST_FIELD);
