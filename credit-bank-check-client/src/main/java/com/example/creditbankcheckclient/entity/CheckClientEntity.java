@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +34,47 @@ public class CheckClientEntity {
     @Column(name = "passport_num")
     private String passportNum;
 
-    @OneToOne(mappedBy = "checkClientEntity")
-    private CheckBidEntity checkBidEntity;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "checkClientEntity")
+    private List <CheckBidEntity> checkBidEntityList;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSurName() {
+        return surName;
+    }
+
+    public void setSurName(String surName) {
+        this.surName = surName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassportNum() {
+        return passportNum;
+    }
+
+    public void setPassportNum(String passportNum) {
+        this.passportNum = passportNum;
+    }
 }
