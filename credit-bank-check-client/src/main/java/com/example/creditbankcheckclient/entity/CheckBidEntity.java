@@ -47,6 +47,7 @@ public class CheckBidEntity {
     @Column(name = "client_сonfirm")
     private Boolean clientConfirm;  // Согласие клиента
 
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_client")
     private CheckClientEntity checkClientEntity;

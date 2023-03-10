@@ -5,6 +5,7 @@ import com.example.creditbankcheckclient.dto.RequestFormDTO;
 import com.example.creditbankcheckclient.entity.CheckBidEntity;
 import com.example.creditbankcheckclient.entity.CheckClientEntity;
 import com.example.creditbankcheckclient.repository.CheckBidRepository;
+import com.example.creditbankcheckclient.repository.CheckClientRepository;
 import com.example.creditbankcheckclient.resttemplate.IsInBlackListResttemplate;
 import com.example.creditbankcheckclient.service.CheckClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class CheckClientServiceImpl implements CheckClientService {
 
     @Autowired
     private CheckBidRepository checkBidRepository;
+
+    @Autowired
+    private CheckClientRepository checkClientRepository;
 
 
 //    RequestFormDTO fillInRequestFormDTO(String firstName,
@@ -93,6 +97,10 @@ public class CheckClientServiceImpl implements CheckClientService {
         return newBidNum;
     }
 
+    String checkByPassportNumMessage(){
+        return "Имя, отчество или фамилия не соответствует номеру паспорта. Введите корректные данные ";
+    }
+
     void clientAndBidEntitiesSet(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm){
 
         newBidNumber = getNewBidNumber();
@@ -114,6 +122,32 @@ public class CheckClientServiceImpl implements CheckClientService {
         checkBidEntity.setPercentYear(percentYear);
         checkBidEntity.setBankConfirm(bankConfirm);
         checkBidEntity.setClientConfirm(null);
+
+
+
+        CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
+
+        Long idClient ;
+
+        if(checkClientEntityByPassportNum != null){
+            if( checkClientEntity.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
+                    && checkClientEntity.getSurName().equals(checkClientEntityByPassportNum.getSurName())
+            && checkClientEntity.getLastName().equals(checkClientEntityByPassportNum.getLastName()) ) {
+                checkBidEntity.setCheckClientEntity(checkClientEntityByPassportNum);
+                checkBidRepository.save(checkBidEntity);
+
+                //               idClient = checkClientEntityByPassportNum.getId();
+
+            } else {
+
+                checkByPassportNumMessage();
+
+            }
+        }
+        else {
+            checkClientRepository.save(checkClientEntity);
+
+        }
 
         checkBidRepository.save(checkBidEntity);
     }

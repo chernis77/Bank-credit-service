@@ -1,9 +1,10 @@
 package com.example.creditbankcheckclient.dto;
 
 
+import lombok.ToString;
 
+@ToString
 public class RequestFormDTO {
-
 
     private String firstName;
 
