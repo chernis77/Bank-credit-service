@@ -1,4 +1,4 @@
-package com.example.creditbankcheckclient.entity;
+package com.example.creditbankapprovedclient.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,32 +11,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "checkclient_table")
-public class CheckClientEntity {
+@Table(name = "approvedclient_table")
+public class ApprovedClientEntity {
 
     @Id
-    @SequenceGenerator(name = "checkclient_tableSequence", sequenceName = "checkclient_table_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "checkclient_tableSequence")
+    @SequenceGenerator(name = "approvedclient_tableSequence", sequenceName = "approvedclient_table_sequence", allocationSize = 1, initialValue = 3)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "approvedclient_tableSequence")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column(name = "sure_name")
+    @Column(name = "surname")
     private String surName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastname")
     private String lastName;
 
-    //    private Date birthDate;
-
-    @Column(name = "passport_num")
+    @Column(name = "passportnum")
     private String passportNum;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "checkClientEntity")
-    private List <CheckBidEntity> checkBidEntityList;
-
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "approvedClientEntity")
+    private List<ContractEntity> contractEntityList;
 
     public Long getId() {
         return id;
@@ -76,5 +73,13 @@ public class CheckClientEntity {
 
     public void setPassportNum(String passportNum) {
         this.passportNum = passportNum;
+    }
+
+    public List<ContractEntity> getContractEntityList() {
+        return contractEntityList;
+    }
+
+    public void setContractEntityList(List<ContractEntity> contractEntityList) {
+        this.contractEntityList = contractEntityList;
     }
 }

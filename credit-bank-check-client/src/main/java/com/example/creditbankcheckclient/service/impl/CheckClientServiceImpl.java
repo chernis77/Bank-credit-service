@@ -2,8 +2,13 @@ package com.example.creditbankcheckclient.service.impl;
 
 import com.example.creditbankcheckclient.dto.CheckResponseDTO;
 import com.example.creditbankcheckclient.dto.RequestFormDTO;
+import com.example.creditbankcheckclient.entity.CheckBidEntity;
+import com.example.creditbankcheckclient.entity.CheckClientEntity;
+import com.example.creditbankcheckclient.repository.CheckBidRepository;
+import com.example.creditbankcheckclient.repository.CheckClientRepository;
 import com.example.creditbankcheckclient.resttemplate.IsInBlackListResttemplate;
 import com.example.creditbankcheckclient.service.CheckClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -20,9 +25,20 @@ public class CheckClientServiceImpl implements CheckClientService {
 
     private boolean isInBlackList;
 
+    private Boolean bankConfirm;
+
+    private String newBidNumber;
+
     private double percentYear;
 
     private static final int MIN_AMOUNT_MONEY = 25000;
+
+    @Autowired
+    private CheckBidRepository checkBidRepository;
+
+    @Autowired
+    private CheckClientRepository checkClientRepository;
+
 
 //    RequestFormDTO fillInRequestFormDTO(String firstName,
 //                                        String surName,
@@ -51,14 +67,14 @@ public class CheckClientServiceImpl implements CheckClientService {
 //        return requestFormDTO;
 //    }
 
-    boolean isInBlackListCheck(String passportNum) {
+    private boolean isInBlackListCheck(String passportNum) {
 
         IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();
         boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(passportNum);
         return inBlackListRequest;
     }
 
-    double monthlyPayment(double creditAmount, double creditTerm, double percentYear) {
+    private double monthlyPayment(double creditAmount, double creditTerm, double percentYear) {
 
         double kMonth = percentYear / 12 / 100;
         double stavkaobsh = Math.pow((1 + kMonth), creditTerm);
@@ -66,6 +82,76 @@ public class CheckClientServiceImpl implements CheckClientService {
         return monthPayment;
     }
 
+    private String getNewBidNumber() {
+
+        CheckBidEntity topByOrderByIdDesc = checkBidRepository.getTopByOrderByIdDesc();
+        String lastBidNumber = topByOrderByIdDesc.getBidNumber();
+
+        String[] arr = lastBidNumber.split("Д23-[0]*");
+        String secondSubstr = arr[1];
+        int i = Integer.parseInt(secondSubstr) + 1;
+        int excl = secondSubstr.length();
+        String firstSubstr = lastBidNumber.substring(0, lastBidNumber.length() - excl);
+        String newBidNum = firstSubstr + i;
+
+        return newBidNum;
+    }
+
+    private String checkByPassportNumMessage() {
+        return "Имя, отчество или фамилия не соответствует номеру паспорта. Введите корректные данные ";
+    }
+
+    private void clientAndBidEntitiesSet(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm) {
+
+        newBidNumber = getNewBidNumber();
+
+        CheckClientEntity checkClientEntity = new CheckClientEntity();
+        checkClientEntity.setFirstName(requestFormDTO.getFirstName());
+        checkClientEntity.setSurName(requestFormDTO.getSurName());
+        checkClientEntity.setLastName(requestFormDTO.getLastName());
+        checkClientEntity.setPassportNum(requestFormDTO.getPassportNum());
+
+        CheckBidEntity checkBidEntity = new CheckBidEntity();
+        checkBidEntity.setBidNumber(newBidNumber);
+        checkBidEntity.setEmployed(requestFormDTO.isEmployed());
+        checkBidEntity.setTimeOfEmployment(requestFormDTO.getTimeOfEmployment());
+        checkBidEntity.setSalary(requestFormDTO.getSalary());
+        checkBidEntity.setLoanPayments(requestFormDTO.getLoanPayments());
+        checkBidEntity.setCreditAmount(requestFormDTO.getCreditAmount());
+        checkBidEntity.setCreditTerm(requestFormDTO.getCreditTerm());
+        checkBidEntity.setPercentYear(percentYear);
+        checkBidEntity.setBankConfirm(bankConfirm);
+        checkBidEntity.setClientConfirm(null);
+
+
+        CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
+
+        Long idClient;
+
+        if (checkClientEntityByPassportNum != null) {
+            if (checkFields(checkClientEntity, checkClientEntityByPassportNum)) {
+                checkBidEntity.setCheckClientEntity(checkClientEntityByPassportNum);
+                checkBidRepository.save(checkBidEntity);
+
+            } else {
+                throw new RuntimeException(checkByPassportNumMessage());
+            }
+
+        } else {
+            checkClientRepository.save(checkClientEntity);
+            CheckClientEntity persistedEntity = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
+            checkBidEntity.setCheckClientEntity(persistedEntity);
+            checkBidRepository.save(checkBidEntity);
+        }
+
+    }
+
+    private boolean checkFields(CheckClientEntity checkClientEntity, CheckClientEntity checkClientEntityByPassportNum) {
+
+        return checkClientEntity.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
+                && checkClientEntity.getSurName().equals(checkClientEntityByPassportNum.getSurName())
+                && checkClientEntity.getLastName().equals(checkClientEntityByPassportNum.getLastName());
+    }
 
     public CheckResponseDTO checkFormClient(RequestFormDTO requestFormDTO) {
 
@@ -77,7 +163,7 @@ public class CheckClientServiceImpl implements CheckClientService {
         double creditTerm = requestFormDTO.getCreditTerm();
 
 
-        boolean isInBlackList = isInBlackListCheck(requestFormDTO.getPassportNum());
+        isInBlackList = isInBlackListCheck(requestFormDTO.getPassportNum());
 
         double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);
 
@@ -115,7 +201,13 @@ public class CheckClientServiceImpl implements CheckClientService {
 
             } else {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
-                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей");
+                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
+                        "номер заявки - " + newBidNumber);
+
+                bankConfirm = true;
+
+                clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
+
             }
 
         } else if (isInBlackList == false && isEmployed == true && timeOfEmployment > 3 && timeOfEmployment < 12) {
@@ -129,8 +221,15 @@ public class CheckClientServiceImpl implements CheckClientService {
 
             } else {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
-                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей");
+                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
+                        "номер заявки - " + newBidNumber);
+
+                bankConfirm = true;
+
+                clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
+
             }
+
         } else if (isInBlackList == false && isEmployed == true && timeOfEmployment > 12) {
 
             percentYear = 13;
@@ -142,11 +241,14 @@ public class CheckClientServiceImpl implements CheckClientService {
 
             } else {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
-                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей");
+                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
+                        "номер заявки - " + newBidNumber);
+
+                bankConfirm = true;
+
+                clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
             }
         }
-
         return checkResponseDTO;
     }
-
 }

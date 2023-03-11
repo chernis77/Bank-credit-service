@@ -1,5 +1,8 @@
 package com.example.creditbankcheckclient.dto;
 
+import lombok.ToString;
+
+@ToString
 public class CheckResponseDTO {
 
 private String message;
