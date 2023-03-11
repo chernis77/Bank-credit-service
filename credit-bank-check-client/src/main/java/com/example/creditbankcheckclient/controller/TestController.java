@@ -57,7 +57,7 @@ public class TestController {
         return transferBidToApproveDTO;
     }
 
-@PostMapping("/toApprovedClient")
+    @PostMapping("/toApprovedClient")
     public String testTransferCheckClientToApproveClient(@RequestParam String bidNumber){
 
         CheckBidEntity checkBidEntityByBidNumber = checkBidRepository.getCheckBidEntityByBidNumber(bidNumber);
@@ -70,6 +70,7 @@ public class TestController {
         return responseMessage;
 
     }
+
 
 
 }

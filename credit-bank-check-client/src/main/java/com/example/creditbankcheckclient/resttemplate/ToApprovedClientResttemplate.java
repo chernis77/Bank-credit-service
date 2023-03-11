@@ -9,6 +9,7 @@ public class ToApprovedClientResttemplate {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    private final String URL = "http://localhost:8098/approved/contract";
     private final String URL2 = "http://localhost:8098/testapproved/requestmessage";
 
     public String testResponceToApprovedClient(TransferBidToApproveDTO transferBidToApproveDTO ){
@@ -20,6 +21,16 @@ public class ToApprovedClientResttemplate {
 
     }
 
+    public String sendBidToApprovedClient(TransferBidToApproveDTO transferBidToApproveDTO ){
+
+        return restTemplate.exchange(URL,
+                HttpMethod.POST,
+                new HttpEntity<>(transferBidToApproveDTO),
+                String.class).getBody();
+
+    }
 
 
 }
+
+//    /approved/contract

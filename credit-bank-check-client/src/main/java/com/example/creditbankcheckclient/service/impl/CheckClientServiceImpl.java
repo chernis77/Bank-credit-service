@@ -25,7 +25,7 @@ public class CheckClientServiceImpl implements CheckClientService {
 
     private boolean isInBlackList;
 
-    private  Boolean bankConfirm;
+    private Boolean bankConfirm;
 
     private String newBidNumber;
 
@@ -67,14 +67,14 @@ public class CheckClientServiceImpl implements CheckClientService {
 //        return requestFormDTO;
 //    }
 
-    boolean isInBlackListCheck(String passportNum) {
+    private boolean isInBlackListCheck(String passportNum) {
 
         IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();
         boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(passportNum);
         return inBlackListRequest;
     }
 
-    double monthlyPayment(double creditAmount, double creditTerm, double percentYear) {
+    private double monthlyPayment(double creditAmount, double creditTerm, double percentYear) {
 
         double kMonth = percentYear / 12 / 100;
         double stavkaobsh = Math.pow((1 + kMonth), creditTerm);
@@ -82,26 +82,26 @@ public class CheckClientServiceImpl implements CheckClientService {
         return monthPayment;
     }
 
-    public String getNewBidNumber(){
+    private String getNewBidNumber() {
 
         CheckBidEntity topByOrderByIdDesc = checkBidRepository.getTopByOrderByIdDesc();
         String lastBidNumber = topByOrderByIdDesc.getBidNumber();
 
         String[] arr = lastBidNumber.split("Д23-[0]*");
         String secondSubstr = arr[1];
-        int i = Integer.parseInt(secondSubstr)+1;
+        int i = Integer.parseInt(secondSubstr) + 1;
         int excl = secondSubstr.length();
-        String firstSubstr = lastBidNumber.substring(0, lastBidNumber.length()-excl );
+        String firstSubstr = lastBidNumber.substring(0, lastBidNumber.length() - excl);
         String newBidNum = firstSubstr + i;
 
         return newBidNum;
     }
 
-    String checkByPassportNumMessage(){
+    private String checkByPassportNumMessage() {
         return "Имя, отчество или фамилия не соответствует номеру паспорта. Введите корректные данные ";
     }
 
-    void clientAndBidEntitiesSet(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm){
+    private void clientAndBidEntitiesSet(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm) {
 
         newBidNumber = getNewBidNumber();
 
@@ -124,34 +124,34 @@ public class CheckClientServiceImpl implements CheckClientService {
         checkBidEntity.setClientConfirm(null);
 
 
-
         CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
 
-        Long idClient ;
+        Long idClient;
 
-        if(checkClientEntityByPassportNum != null){
-            if( checkClientEntity.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
-                    && checkClientEntity.getSurName().equals(checkClientEntityByPassportNum.getSurName())
-            && checkClientEntity.getLastName().equals(checkClientEntityByPassportNum.getLastName()) ) {
+        if (checkClientEntityByPassportNum != null) {
+            if (checkFields(checkClientEntity, checkClientEntityByPassportNum)) {
                 checkBidEntity.setCheckClientEntity(checkClientEntityByPassportNum);
                 checkBidRepository.save(checkBidEntity);
 
-                //               idClient = checkClientEntityByPassportNum.getId();
-
             } else {
-
-                checkByPassportNumMessage();
-
+                throw new RuntimeException(checkByPassportNumMessage());
             }
-        }
-        else {
+
+        } else {
             checkClientRepository.save(checkClientEntity);
-
+            CheckClientEntity persistedEntity = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
+            checkBidEntity.setCheckClientEntity(persistedEntity);
+            checkBidRepository.save(checkBidEntity);
         }
 
-        checkBidRepository.save(checkBidEntity);
     }
 
+    private boolean checkFields(CheckClientEntity checkClientEntity, CheckClientEntity checkClientEntityByPassportNum) {
+
+        return checkClientEntity.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
+                && checkClientEntity.getSurName().equals(checkClientEntityByPassportNum.getSurName())
+                && checkClientEntity.getLastName().equals(checkClientEntityByPassportNum.getLastName());
+    }
 
     public CheckResponseDTO checkFormClient(RequestFormDTO requestFormDTO) {
 
@@ -221,7 +221,7 @@ public class CheckClientServiceImpl implements CheckClientService {
 
             } else {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
-                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, "+
+                        creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
                         "номер заявки - " + newBidNumber);
 
                 bankConfirm = true;
@@ -247,11 +247,8 @@ public class CheckClientServiceImpl implements CheckClientService {
                 bankConfirm = true;
 
                 clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
-
             }
         }
-
         return checkResponseDTO;
     }
-
 }
