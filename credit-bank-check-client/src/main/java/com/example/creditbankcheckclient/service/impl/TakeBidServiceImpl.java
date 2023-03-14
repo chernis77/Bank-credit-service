@@ -13,22 +13,21 @@ import org.springframework.stereotype.Service;
 public class TakeBidServiceImpl implements TakeBidService {
 
     @Autowired
-    CheckBidRepository checkBidRepository;
+    private CheckBidRepository checkBidRepository;
 
     @Autowired
-    TransferBidToApproveDTOMapper transferBidToApproveDTOMapper;
+    private TransferBidToApproveDTOMapper transferBidToApproveDTOMapper;
 
 
-
-
-    public String takeBidForContract(String bidNumber){
+    public String takeBidForContract(String bidNumber) {
 
         String message = null;
 
         CheckBidEntity checkBidEntityByBidNumber = checkBidRepository.getCheckBidEntityByBidNumber(bidNumber);
 
-        if(checkBidEntityByBidNumber != null  && checkBidEntityByBidNumber.getBankConfirm() == true && checkBidEntityByBidNumber.getClientConfirm() == null){
+        if (checkBidEntityByBidNumber != null && checkBidEntityByBidNumber.getBankConfirm() == true && checkBidEntityByBidNumber.getClientConfirm() == null) {
             checkBidEntityByBidNumber.setClientConfirm(true);
+            checkBidRepository.save(checkBidEntityByBidNumber);
             TransferBidToApproveDTO transferBidToApproveDTO = transferBidToApproveDTOMapper.fillTransferBidToApproveDTO(checkBidEntityByBidNumber);
 
             ToApprovedClientResttemplate toApprovedClientResttemplate = new ToApprovedClientResttemplate();
@@ -36,10 +35,10 @@ public class TakeBidServiceImpl implements TakeBidService {
 
             message = s;
 
-        } else if (checkBidEntityByBidNumber == null ){
+        } else if (checkBidEntityByBidNumber == null) {
             message = "Заявки с таким номером не существует ";
         } else if (checkBidEntityByBidNumber.getBankConfirm() == true && checkBidEntityByBidNumber.getClientConfirm() == true) {
-            message =  "Договор по заявке № " + bidNumber + " уже создан." ;
+            message = "Договор по заявке № " + bidNumber + " уже создан.";
         }
         return message;
     }
