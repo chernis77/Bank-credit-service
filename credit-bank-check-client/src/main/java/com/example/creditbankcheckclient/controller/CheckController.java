@@ -70,15 +70,25 @@ public class CheckController {
 
     }
 
-    @PostMapping("/contractmessage/{bidNumber}")
-    public String confirmBidAndCreateContract(@PathVariable String bidNumber) {          // @PathVariable вместо @RequestParam
+//    @PostMapping("/contractmessage/{bidNumber}")
+//    public String confirmBidAndCreateContract(@PathVariable String bidNumber) {          // @PathVariable вместо @RequestParam
+//
+//        return takeBidService.takeBidForContract(bidNumber);
+//
+//    }
+
+
+    @PostMapping("/contractmessage")
+    public String confirmBidAndCreateContract(@RequestParam String bidNumber) {
 
         return takeBidService.takeBidForContract(bidNumber);
 
     }
+
+
 }
 
 
 //   /check/checkrequest                /check/blacklist          /check/monthpay
 
-//  /check/clientresponse
+//  /check/clientresponse               /check/contractmessage/{bidNumber}

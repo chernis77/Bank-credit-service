@@ -29,8 +29,12 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         approvedClientEntity.setSurName(transferBidToApproveDTO.getSurName());
         approvedClientEntity.setLastName(transferBidToApproveDTO.getLastName());
         approvedClientEntity.setPassportNum(transferBidToApproveDTO.getPassportNum());
-        List<ContractEntity> contractEntityList = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum()).getContractEntityList();
-        approvedClientEntity.setContractEntityList(contractEntityList);
+        ApprovedClientEntity uncludeEntity = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
+        if(uncludeEntity == null){
+            approvedClientEntity.setContractEntityList(null);
+        }else{
+            approvedClientEntity.setContractEntityList(uncludeEntity.getContractEntityList());
+        }
 
         contractEntity.setContractNumber(transferBidToApproveDTO.getBidNumber());
         contractEntity.setCreditAmount(transferBidToApproveDTO.getCreditAmount());
