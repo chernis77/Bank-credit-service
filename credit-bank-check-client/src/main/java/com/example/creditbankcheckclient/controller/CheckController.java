@@ -24,15 +24,10 @@ public class CheckController {
     @Autowired
     private TakeBidService takeBidService;
 
-    //    public String requestTest(@RequestBody RequestFormDTO requestFormDTO){
+
     @GetMapping("/checkrequest")
     public String requestTest() {
 
-//        if(requestFormDTO.getFirstName()!= null && requestFormDTO.getLastName() !=null) {
-//
-//            return "Метод requestTest из модуля credit-bank-check-client, поля заполнены ";
-//
-//        }
         return "Метод requestTest из модуля credit-bank-check-client, поля отсутствуют ";
     }
 
@@ -62,6 +57,11 @@ public class CheckController {
 
 //    }
 
+    /**
+     *  Получает с credit-bank-first-client форму заявки RequestFormDTO.
+     *
+     *
+     */
     @PostMapping("/clientresponse")
     public CheckResponseDTO checkClientResponse(@RequestBody RequestFormDTO requestFormDTO) {
 
@@ -77,6 +77,11 @@ public class CheckController {
 //
 //    }
 
+    /**
+     *  Получает от клиента номер заявки, существующей в checkbid_table.
+     *  В случае, если в checkbid_table в поле bank_confirm установлено значение true,
+     *  устанавливает true в поле client_confirm и отправляет 
+     */
 
     @PostMapping("/contractmessage")
     public String confirmBidAndCreateContract(@RequestParam String bidNumber) {

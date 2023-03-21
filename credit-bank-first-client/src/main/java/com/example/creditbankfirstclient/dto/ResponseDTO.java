@@ -1,16 +1,16 @@
 package com.example.creditbankfirstclient.dto;
 
-public class ResponseDTO extends ErrorsDTO{
+public class ResponseDTO {
 
+    private String message;
 
-     /**Номер заявки*/
-    private Double bidNumber;
-
-    public Double getBidNumber() {
-        return bidNumber;
+    public String getMessage() {
+        return message;
     }
 
-    public void setBidNumber(Double bidNumber) {
-        this.bidNumber = bidNumber;
+    public void setMessage(String message) {
+        this.message = message;
     }
+
+
 }

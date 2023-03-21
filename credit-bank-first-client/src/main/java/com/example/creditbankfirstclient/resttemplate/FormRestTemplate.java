@@ -27,6 +27,11 @@ public class FormRestTemplate  {
 
     }
 
+    /**
+     *  Высылает на credit-bank-check-client экземпляр RequestFormDTO ,
+     *  затем получает с credit-bank-check-client ответ в экземпляре CheckResponseDTO, возвращает CheckResponseDTO
+     */
+
     public CheckResponseDTO getCheckResponse(RequestFormDTO requestFormDTO){
 
         return    restTemplate.exchange(              // restTemplate.exchange() - метод сборки параметров для запроса

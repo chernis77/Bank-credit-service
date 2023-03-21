@@ -11,47 +11,51 @@ import java.util.List;
 
 @Service
 public class PaymentsCalcImpl implements PaymentsCalc{
+
+
+    /**
+     * Возвращает график платежей в ArrayList
+     */
     @Override
     public List<PaymentsSchedule> getPaymentsSchedule(ContractEntity contractEntity) {
 
-        double creditAmount = contractEntity.getCreditAmount();  //(kredit)
-        double creditTerm = contractEntity.getCreditTerm();     //Срок кредита - (srok )
+        double creditAmount = contractEntity.getCreditAmount();  //Сумма кредита
+        double creditTerm = contractEntity.getCreditTerm();     //Срок кредита
         double percentYear = contractEntity.getPercentYear();   //Годовая ставка
-        double loanBalance = creditAmount;                      //Остаток по кредиту - (ostatok)
-        double kMonth = percentYear/12/100;                     //(stavkames)
+        double loanBalance = creditAmount;                      //Остаток по кредиту
+        double kMonth = percentYear/12/100;                     //
         int month = 1;
         double stavkaobsh = Math.pow((1 + kMonth), creditTerm);
-        double monthPayment = creditAmount * kMonth * stavkaobsh / (stavkaobsh - 1);
-        double totalOverpayment = 0;
-        totalOverpayment = monthPayment * creditTerm - creditAmount;
-
+        double monthPayment = creditAmount * kMonth * stavkaobsh / (stavkaobsh - 1); //Месячный платеж
+        double totalOverpayment = monthPayment * creditTerm - creditAmount;          //Переплата по процентам за весь срок кредита
 
         List<PaymentsSchedule> paymentsScheduleList = new ArrayList<>();
 
-        while (loanBalance > 0 ){
+        while (month <=24){
 
             PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
 
             double percentNow = loanBalance * kMonth;               //Выплата по процентам в текущем платеже
             loanBalance = loanBalance + percentNow - monthPayment;
 
-            if(monthPayment > loanBalance ){
-//               monthPayment = loanBalance;
-
-                paymentsSchedule.setMonth(month);
-                paymentsSchedule.setMonthPayment(loanBalance);
-                paymentsSchedule.setPercentNow(percentNow);
-                paymentsSchedule.setLoanBalance(loanBalance);
-                paymentsSchedule.setTotalOverpayment(totalOverpayment);
-
-                paymentsScheduleList.add(paymentsSchedule);
- //              break;
-            }
+//            if(monthPayment > loanBalance ){
+////               monthPayment = loanBalance;
+//
+//                paymentsSchedule.setMonth(month);
+//                paymentsSchedule.setMonthPayment(loanBalance);
+//                paymentsSchedule.setPercentNow(percentNow);
+//                paymentsSchedule.setLoanBalance(loanBalance);
+//                paymentsSchedule.setTotalOverpayment(totalOverpayment);
+//
+//                paymentsScheduleList.add(paymentsSchedule);
+// //              break;
+//            }
 
             paymentsSchedule.setMonth(month);
-            paymentsSchedule.setMonthPayment(monthPayment);
-            paymentsSchedule.setPercentNow(percentNow);
-            paymentsSchedule.setLoanBalance(loanBalance);
+            paymentsSchedule.setMonthPayment(Math.round(monthPayment));
+            paymentsSchedule.setPercentNow(Math.round(percentNow));
+            paymentsSchedule.setLoanBalance(Math.round(loanBalance));
+            paymentsSchedule.setTotalOverpayment(Math.round(totalOverpayment));
 
             paymentsScheduleList.add(paymentsSchedule);
 
@@ -62,32 +66,3 @@ public class PaymentsCalcImpl implements PaymentsCalc{
     }
 }
 
-//    public double grafikPlatezey() {
-//        double totalPereplata = 0;
-//        double ostatok = kredit;
-//        int mesyac = 1;
-//        System.out.println("Месяц, Остаток , Процент ");
-//        if (dif == false) {                     // а можно так :(!dif) - это false, (dif) - это true
-//            double stavkaobsh = Math.pow((1 + stavkames), srok);
-//            double platez = kredit * stavkames * stavkaobsh / (stavkaobsh - 1);
-//            totalPereplata = platez * srok - kredit;
-//            while (ostatok > 0) {
-//                double procentNow = ostatok * stavkames;
-//                System.out.format(" %d,  %.2f,  %.2f%n", mesyac, ostatok, procentNow);
-//                ostatok = ostatok + procentNow - platez;
-//                mesyac++;
-//
-//            }
-//        } else {
-//            double dolgMes = kredit / srok;
-//            while (ostatok > 0) {
-//                double procentNow = ostatok * stavkames;
-//                double platezDif = dolgMes + procentNow;
-//                totalPereplata += procentNow;
-//                System.out.format(" %d,  %.2f,  %.2f%n", mesyac, ostatok, procentNow);
-//                ostatok = ostatok + procentNow - platezDif;
-//                mesyac++;
-//            }
-//        }
-//        return totalPereplata;
-//    }

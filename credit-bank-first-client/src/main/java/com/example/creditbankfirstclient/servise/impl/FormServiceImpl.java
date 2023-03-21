@@ -39,6 +39,11 @@ public class FormServiceImpl implements FormService {
 //        return responseDTO;
 //    }
 
+    /**
+     * Выполняет валидацию полей экземпляра FillFormDTO, возвращает  ResponseDTO с сообщением
+     * о выявленных ошибках.
+     */
+
     public ResponseDTO validateField(FillFormDTO form) {
 
         ResponseDTO responseDTO = new ResponseDTO();
@@ -139,6 +144,10 @@ public class FormServiceImpl implements FormService {
 
         return responseDTO;
     }
+
+    /**
+     * Заполняет поля экземпляра RequestFormDTO из FillFormDTO, возвращает экземпляр RequestFormDTO
+     */
 
     public RequestFormDTO fillInRequestFormDTO(FillFormDTO form) {
 

@@ -68,6 +68,12 @@ public class FormController {
 //        }
 //        return responseDTO;
 //    }
+
+    /**
+     *  Принимает от клиента заполненную форму запроса FillFormDTO на выдачу кредита.
+     *
+     *
+     */
     @PostMapping("/sendform")
     public @ResponseBody ResponseDTO sendFormToCheckClient(@RequestBody FillFormDTO fillFormDTO) {
 

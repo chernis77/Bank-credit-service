@@ -1,8 +1,6 @@
 package com.example.creditbankapprovedclient.dto;
 
-import com.example.creditbankapprovedclient.service.PaymentsCalc;
 import com.example.creditbankapprovedclient.service.PaymentsSchedule;
-import jakarta.persistence.Column;
 
 import java.util.List;
 

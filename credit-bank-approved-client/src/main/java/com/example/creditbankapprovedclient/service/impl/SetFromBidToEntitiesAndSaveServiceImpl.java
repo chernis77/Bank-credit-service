@@ -9,8 +9,6 @@ import com.example.creditbankapprovedclient.service.SetFromBidToEntitiesAndSaveS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntitiesAndSaveService {
 
@@ -20,6 +18,11 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
     @Autowired
     private ApprovedClientRepository approvedClientRepository;
 
+    /**
+     *    Заполняет экземпляры ApprovedClientEntity и ContractEntity значениями из TransferBidToApproveDTO,
+     *    затем сохраняет их в базу данных.
+     *
+     */
     public void setAndSaveFromBidToContract(TransferBidToApproveDTO transferBidToApproveDTO) {
 
         ApprovedClientEntity approvedClientEntity = new ApprovedClientEntity();
@@ -29,11 +32,11 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         approvedClientEntity.setSurName(transferBidToApproveDTO.getSurName());
         approvedClientEntity.setLastName(transferBidToApproveDTO.getLastName());
         approvedClientEntity.setPassportNum(transferBidToApproveDTO.getPassportNum());
-        ApprovedClientEntity uncludeEntity = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
-        if(uncludeEntity == null){
+        ApprovedClientEntity includeEntity = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
+        if(includeEntity == null){
             approvedClientEntity.setContractEntityList(null);
         }else{
-            approvedClientEntity.setContractEntityList(uncludeEntity.getContractEntityList());
+            approvedClientEntity.setContractEntityList(includeEntity.getContractEntityList());
         }
 
         contractEntity.setContractNumber(transferBidToApproveDTO.getBidNumber());
@@ -54,6 +57,11 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         }
     }
 
+
+    /**
+     *  Возвращает сообщение о заключенном кредитном договоре
+     *
+     */
     public String contractResponseMessage(String bidNumber) {
 
         ContractEntity contractEntityByContractNumber = contractRepository.getContractEntityByContractNumber(bidNumber);
