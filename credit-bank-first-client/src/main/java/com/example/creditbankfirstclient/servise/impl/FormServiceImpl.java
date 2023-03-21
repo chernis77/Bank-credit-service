@@ -48,13 +48,93 @@ public class FormServiceImpl implements FormService {
 
         ResponseDTO responseDTO = new ResponseDTO();
 
-//        if (form == null) {
-//            responseDTO.setMessage("Ошибка заполнения формы");
-//        }
+        if (form == null) {
+            responseDTO.setMessage("Ошибка заполнения формы - форма пустая");
+            return responseDTO;
+        }
+
+        if(form.getFirstName() == null || form.getFirstName().equals("") ){
+            responseDTO.setMessage("Поле firstName пустое");
+        }
+
+        if(form.getSurName() == null || form.getSurName().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле surName пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле surName пустое");
+            }
+        }
+
+        if(form.getLastName() == null || form.getLastName().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле lastName пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле lastName пустое");
+            }
+        }
+
+        if(form.getPassportNum() == null || form.getPassportNum().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле passportNum пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле passportNum пустое");
+            }
+        }
+
+        if(form.getIsEmployed() == null || form.getIsEmployed().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле IsEmployed пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле IsEmployed пустое");
+            }
+        }
+
+        if(form.getTimeOfEmployment() == null || form.getTimeOfEmployment().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле timeOfEmployment пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле timeOfEmployment пустое");
+            }
+        }
+        if(form.getSalary() == null || form.getSalary().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле salary пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле salary пустое");
+            }
+        }
+
+        if(form.getLoanPayments() == null || form.getLoanPayments().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле loanPayments пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле loanPayments пустое");
+            }
+        }
+
+        if(form.getCreditAmount() == null || form.getCreditAmount().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле creditAmount пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле creditAmount пустое");
+            }
+        }
+
+        if(form.getCreditTerm() == null || form.getCreditTerm().equals("")){
+            if(responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + " \n" + " Поле creditTerm пустое");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("Поле creditTerm пустое");
+            }
+        }
+
 
         if (form.getFirstName().matches(".*[^А-Яа-яЁё].*") == true) {
-            responseDTO.setMessage("В поле firstName содержатся некорректные символы");
-
+            if (responseDTO.getMessage() != null) {
+                responseDTO.setMessage(responseDTO.getMessage() + "\n" + " В поле firstName содержатся некорректные символы");
+            } else if (responseDTO.getMessage() == null) {
+                responseDTO.setMessage("В поле firstName содержатся некорректные символы");
+            }
             //  responseDTO.setStatusCode(HttpStatus.SC_FORBIDDEN);
         }
 

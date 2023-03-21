@@ -1,6 +1,7 @@
 package com.example.creditbankfirstclient.validatefieldtest;
 
 import com.example.creditbankfirstclient.dto.FillFormDTO;
+import com.example.creditbankfirstclient.dto.RequestFormDTO;
 import com.example.creditbankfirstclient.dto.ResponseDTO;
 import com.example.creditbankfirstclient.servise.impl.FormServiceImpl;
 import org.junit.Assert;
@@ -41,4 +42,23 @@ public class ValidateFieldTest {
         Assert.assertTrue(responseDTO.getMessage() != null);
 
     }
+
+    @Test
+    public void fillInRequestFormDTOTest(){
+        Mockito.when(fillFormDTO.getFirstName()).thenReturn("Андрей");
+        Mockito.when(fillFormDTO.getSurName()).thenReturn("Петрович");
+        Mockito.when(fillFormDTO.getLastName()).thenReturn("Смиронов");
+        Mockito.when(fillFormDTO.getPassportNum()).thenReturn("2110 876428");
+        Mockito.when(fillFormDTO.getIsEmployed()).thenReturn("Да");
+        Mockito.when(fillFormDTO.getTimeOfEmployment()).thenReturn("12");
+        Mockito.when(fillFormDTO.getSalary()).thenReturn("50000");
+        Mockito.when(fillFormDTO.getLoanPayments()).thenReturn("15000");
+        Mockito.when(fillFormDTO.getCreditAmount()).thenReturn("300000");
+        Mockito.when(fillFormDTO.getCreditTerm()).thenReturn("48");
+
+        RequestFormDTO requestFormDTO = formService.fillInRequestFormDTO(fillFormDTO);
+
+        Assert.assertTrue(requestFormDTO != null);
+    }
+
 }
