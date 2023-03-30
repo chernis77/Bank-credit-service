@@ -9,8 +9,10 @@ import com.example.creditbankcheckclient.repository.CheckBidRepository;
 import com.example.creditbankcheckclient.repository.CheckClientRepository;
 import com.example.creditbankcheckclient.resttemplate.IsInBlackListResttemplate;
 import com.example.creditbankcheckclient.service.CheckClientService;
+import com.example.creditbankcheckclient.service.IsInBlackListResttemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 
 /**
@@ -43,33 +45,9 @@ public class CheckClientServiceImpl implements CheckClientService {
     @Autowired
     private ClientAndBidMapper clientAndBidMapper ;
 
+    @Autowired
+    private IsInBlackListResttemplateService isInBlackListResttemplateService;
 
-//    RequestFormDTO fillInRequestFormDTO(String firstName,
-//                                        String surName,
-//                                        String lastName,
-//                                        String passportNum,
-//                                        boolean isEmployed,
-//                                        int timeOfEmployment,
-//                                        double salary,
-//                                        double loanPayments,
-//                                        double creditAmount,
-//                                        double creditTerm
-//    ) {
-//        RequestFormDTO requestFormDTO = new RequestFormDTO();
-//
-//        requestFormDTO.setFirstName(firstName);
-//        requestFormDTO.setSurName(surName);
-//        requestFormDTO.setLastName(lastName);
-//        requestFormDTO.setPassportNum(passportNum);
-//        requestFormDTO.setEmployed(isEmployed);
-//        requestFormDTO.setTimeOfEmployment(timeOfEmployment);
-//        requestFormDTO.setSalary(salary);
-//        requestFormDTO.setLoanPayments(loanPayments);
-//        requestFormDTO.setCreditAmount(creditAmount);
-//        requestFormDTO.setCreditTerm(creditTerm);
-//
-//        return requestFormDTO;
-//    }
 
     /**
      *  Делает запрос на black-list-servise по номеру паспорта - String passportNum
@@ -198,11 +176,25 @@ public class CheckClientServiceImpl implements CheckClientService {
         double creditAmount = requestFormDTO.getCreditAmount();
         double creditTerm = requestFormDTO.getCreditTerm();
 
+        CheckResponseDTO checkResponseDTO = new CheckResponseDTO();
 //        CheckBidEntity topByOrderByIdDesc = checkBidRepository.getTopByOrderByIdDesc();
 //        String bidNumber = topByOrderByIdDesc.getBidNumber();
 
+        boolean blackListResponse;
+        try {
+            blackListResponse = isInBlackListResttemplateService.getBlackListResponse(requestFormDTO.getPassportNum());
+        } catch (NullPointerException ex ){
+            checkResponseDTO.setMessage("Null ответ с BlackListService");
+            return checkResponseDTO;
+        } catch (ResourceAccessException ex){
+            checkResponseDTO.setMessage("Нет доступа к BlackListService" );
+            return checkResponseDTO;
+        }
 
-        boolean isInBlackList = isInBlackListCheck(requestFormDTO.getPassportNum());
+
+
+
+//        boolean isInBlackList = isInBlackListCheck(requestFormDTO.getPassportNum());
 
 //        double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);
 
@@ -211,25 +203,25 @@ public class CheckClientServiceImpl implements CheckClientService {
         double maxCreditAmount = maxMonthPayment * creditTerm;
 
 
-        CheckResponseDTO checkResponseDTO = new CheckResponseDTO();
 
 
-        if (isInBlackList == true && isEmployed == false) {
+
+        if (blackListResponse == true && isEmployed == false) {
 
             checkResponseDTO.setMessage("Вам отказано в кредите - у Вас плохая кредитная история и Вы не трудоустроены");
 
 
-        } else if (isInBlackList == true && isEmployed == true && timeOfEmployment >= 12 && maxMonthPayment >= 5000) {
+        } else if (blackListResponse == true && isEmployed == true && timeOfEmployment >= 12 && maxMonthPayment >= 5000) {
 
             percentYear = 30;
             checkResponseDTO.setMessage("Вам доступен кредит 50000 под " + percentYear + " % годовых, сроком от 1 до 3 лет");
 
-        } else if (isInBlackList == false && isEmployed == false) {
+        } else if (blackListResponse == false && isEmployed == false) {
 
             percentYear = 25;
             checkResponseDTO.setMessage("Вам доступен кредит 50000 под " + percentYear + " % годовых, сроком от 1 до 3 лет");
 
-        } else if (isInBlackList == false && isEmployed == true && timeOfEmployment < 3) {
+        } else if (blackListResponse == false && isEmployed == true && timeOfEmployment < 3) {
 
             percentYear = 20;
             double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);
@@ -250,13 +242,9 @@ public class CheckClientServiceImpl implements CheckClientService {
                         creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
                         "номер заявки - " + bidNumber);
 
-
-
-
-
             }
 
-        } else if (isInBlackList == false && isEmployed == true && timeOfEmployment > 3 && timeOfEmployment < 12) {
+        } else if (blackListResponse == false && isEmployed == true && timeOfEmployment > 3 && timeOfEmployment < 12) {
 
             percentYear = 17;
             double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);
@@ -276,13 +264,9 @@ public class CheckClientServiceImpl implements CheckClientService {
                         creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
                         "номер заявки - " + bidNumber);
 
-
-
-
-
             }
 
-        } else if (isInBlackList == false && isEmployed == true && timeOfEmployment > 12) {
+        } else if (blackListResponse == false && isEmployed == true && timeOfEmployment > 12) {
 
             percentYear = 13;
             double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);

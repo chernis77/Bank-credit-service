@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class ContractEntity {
 
     @Column(name = "percent_year")
     private Double percentYear;
+
+    @Column(name = "date_contract")
+    private String dateContract;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_client")
@@ -71,6 +76,16 @@ public class ContractEntity {
 
     public void setPercentYear(Double percentYear) {
         this.percentYear = percentYear;
+    }
+
+    public String getDateContract() {
+        return dateContract;
+    }
+
+    public void setDateContract() {
+
+        this.dateContract = LocalDate.now().toString();
+
     }
 
     public ApprovedClientEntity getApprovedClientEntity() {

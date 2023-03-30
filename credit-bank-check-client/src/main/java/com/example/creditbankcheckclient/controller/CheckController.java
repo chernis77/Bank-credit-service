@@ -39,24 +39,6 @@ public class CheckController {
 
     }
 
-//    @GetMapping( "/blacklist2")
-//    public boolean blackListRequest(String passportNum){
-//
-//        TransferPassportNumDTO transferPassportNumDTO = new TransferPassportNumDTO();
-//        transferPassportNumDTO.setPassportNum(passportNum);
-//
-//        IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();
-//        boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(transferPassportNumDTO);
-//        try {
-//            boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(transferPassportNumDTO);
-//        } catch (HttpStatusCodeException ex){
-//            ex.getStatusCode();
-//            return
-//        }
-//        return inBlackListRequest;
-
-//    }
-
     /**
      *  Получает с credit-bank-first-client форму заявки RequestFormDTO.
      *
@@ -70,13 +52,6 @@ public class CheckController {
 
     }
 
-//    @PostMapping("/contractmessage/{bidNumber}")
-//    public String confirmBidAndCreateContract(@PathVariable String bidNumber) {          // @PathVariable вместо @RequestParam
-//
-//        return takeBidService.takeBidForContract(bidNumber);
-//
-//    }
-
     /**
      *  Получает от клиента номер заявки, существующей в checkbid_table.
      *  В случае, если в checkbid_table в поле bank_confirm установлено значение true,
@@ -89,8 +64,6 @@ public class CheckController {
         return takeBidService.takeBidForContract(bidNumber);
 
     }
-
-
 }
 
 

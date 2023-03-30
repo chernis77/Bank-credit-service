@@ -43,6 +43,7 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         contractEntity.setCreditAmount(transferBidToApproveDTO.getCreditAmount());
         contractEntity.setCreditTerm(transferBidToApproveDTO.getCreditTerm());
         contractEntity.setPercentYear(transferBidToApproveDTO.getPercentYear());
+        contractEntity.setDateContract();
 
         ApprovedClientEntity approvedClientEntitiesByPassportNum = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
 
@@ -67,6 +68,7 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         ContractEntity contractEntityByContractNumber = contractRepository.getContractEntityByContractNumber(bidNumber);
 
         String contractNumber = contractEntityByContractNumber.getContractNumber();
+        String contractDate = contractEntityByContractNumber.getDateContract();
         Double creditAmount = contractEntityByContractNumber.getCreditAmount();
         Double creditTerm = contractEntityByContractNumber.getCreditTerm();
         Double percentYear = contractEntityByContractNumber.getPercentYear();
@@ -74,8 +76,8 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         String surName = contractEntityByContractNumber.getApprovedClientEntity().getSurName();
         String lastName = contractEntityByContractNumber.getApprovedClientEntity().getLastName();
 
-        return "Заключён кредитный договор №" + contractNumber + " , " + creditAmount + " руб. на срок "
-                + creditTerm + " мес. под " + percentYear + "% годовых " + firstName + " " + surName + " " + lastName;
+        return "Заключён кредитный договор №" + contractNumber + " , дата  " + contractDate + " , сумма " + creditAmount + " руб. на срок "
+                 + creditTerm + " мес. под " + percentYear + "% годовых " + firstName + " " + surName + " " + lastName;
 
     }
 

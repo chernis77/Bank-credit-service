@@ -9,35 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FormServiceImpl implements FormService {
+public class  FormServiceImpl implements FormService {
 
 
-//    @Autowired
-//    private FormFeignService formFeignService;
+
 
     @Autowired
     private FormRestTemplate formRestTemplate;
 
 
-//    public ResponseDTO fillInForm(String firstName, String lastName) {
-//        RequestFormDTO requestFormDTO = new RequestFormDTO();
-//        requestFormDTO.setFirstName(firstName);
-//        requestFormDTO.setLastName(lastName);
-//
-//
-//        ResponseDTO responseDTO = validateField(requestFormDTO);
-//
-//        if (responseDTO.getMessage() != null) {
-//            return responseDTO;
-//        }
-////        /** вызываем FeinClient, передаём RequestFormDTO */
-//
-////        String s = formFeignService.requestTest(requestFormDTO);
-//
-//        String s = formRestTemplate.getCheckForm(requestFormDTO);
-//        responseDTO.setMessage(s);
-//        return responseDTO;
-//    }
 
     /**
      * Выполняет валидацию полей экземпляра FillFormDTO, возвращает  ResponseDTO с сообщением

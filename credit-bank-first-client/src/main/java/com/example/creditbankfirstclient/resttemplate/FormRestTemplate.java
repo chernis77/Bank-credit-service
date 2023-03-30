@@ -41,6 +41,7 @@ public class FormRestTemplate  {
                 CheckResponseDTO.class                       //тип возвращаемого значения
         ).getBody();                               // .getBody() - метод для выгрузки запроса
 
+//        return new CheckResponseDTO();
     }
 
 }

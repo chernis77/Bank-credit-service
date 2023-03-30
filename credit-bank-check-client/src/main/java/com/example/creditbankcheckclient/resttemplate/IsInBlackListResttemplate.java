@@ -3,8 +3,11 @@ package com.example.creditbankcheckclient.resttemplate;
 import com.example.creditbankcheckclient.dto.TransferPassportNumDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class IsInBlackListResttemplate {
 
     private RestTemplate restTemplate = new RestTemplate();

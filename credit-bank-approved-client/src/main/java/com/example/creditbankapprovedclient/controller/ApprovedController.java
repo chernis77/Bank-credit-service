@@ -19,7 +19,7 @@ public class ApprovedController {
 
         String bidNumber = transferBidToApproveDTO.getBidNumber();
 
-        return   setFromBidToEntitiesAndSaveService.contractResponseMessage(bidNumber);
+         return   setFromBidToEntitiesAndSaveService.contractResponseMessage(bidNumber);
 
     }
 

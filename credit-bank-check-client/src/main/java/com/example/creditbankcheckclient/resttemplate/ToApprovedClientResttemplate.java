@@ -3,8 +3,10 @@ package com.example.creditbankcheckclient.resttemplate;
 import com.example.creditbankcheckclient.dto.TransferBidToApproveDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class ToApprovedClientResttemplate {
 
     private RestTemplate restTemplate = new RestTemplate();
