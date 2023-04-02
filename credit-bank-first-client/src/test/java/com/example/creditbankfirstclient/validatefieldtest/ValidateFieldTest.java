@@ -13,6 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.example.creditbankfirstclient.controller.ConstantProject.TEST_FIELD;
+
 @SpringBootTest
 //@RunWith(MockitoJUnitRunner.class )
 @SuppressWarnings("unchecked")
@@ -24,7 +26,6 @@ public class ValidateFieldTest {
     @Mock
     private FillFormDTO fillFormDTO;
 
-    private final String TEST_FIELD = "gfds568";
     @Test
     public void checkNonValidateTest(){
         Mockito.when(fillFormDTO.getFirstName()).thenReturn(TEST_FIELD);

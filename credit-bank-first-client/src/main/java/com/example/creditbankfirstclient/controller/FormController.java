@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/fill" )
-public class FormController {
+import static com.example.creditbankfirstclient.controller.ConstantProject.SEND_FORM_PATH;
 
+@RestController
+public class FormController {
 
     @Autowired
     private FormService formService;
@@ -27,7 +27,7 @@ public class FormController {
     /**
      *  Принимает от клиента заполненную форму запроса FillFormDTO на выдачу кредита.
      */
-    @PostMapping("/sendform")
+    @PostMapping(SEND_FORM_PATH)
     public @ResponseBody ResponseDTO sendFormToCheckClient(@RequestBody FillFormDTO fillFormDTO) {
 
         ResponseDTO responseDTO = formService.validateField(fillFormDTO);
