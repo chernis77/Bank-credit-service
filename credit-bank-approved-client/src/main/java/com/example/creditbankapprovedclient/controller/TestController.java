@@ -48,8 +48,8 @@ public class TestController {
 
     }
 
-    @PostMapping("/contractinfo")
-    public @ResponseBody ContractShowDTO getContractInfo(@RequestParam String contractNumber ){
+    @PostMapping("/contractinfo/{contractNumber}")
+    public @ResponseBody ContractShowDTO getContractInfo(@PathVariable String contractNumber ){
 
         ContractEntity contractEntityByContractNumber = contractRepository.getContractEntityByContractNumber(contractNumber);
 

@@ -24,6 +24,16 @@ public class ContractShowDTO {
 
     private Double percentYear;
 
+    private String dateContract;
+
+    public String getDateContract() {
+        return dateContract;
+    }
+
+    public void setDateContract(String dateContract) {
+        this.dateContract = dateContract;
+    }
+
     private List<PaymentsSchedule> paymentsScheduleList;
 
     public String getContractNumber() {

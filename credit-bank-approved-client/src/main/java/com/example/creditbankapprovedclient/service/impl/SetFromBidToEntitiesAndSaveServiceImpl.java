@@ -9,6 +9,8 @@ import com.example.creditbankapprovedclient.service.SetFromBidToEntitiesAndSaveS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntitiesAndSaveService {
 
@@ -19,9 +21,8 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
     private ApprovedClientRepository approvedClientRepository;
 
     /**
-     *    Заполняет экземпляры ApprovedClientEntity и ContractEntity значениями из TransferBidToApproveDTO,
-     *    затем сохраняет их в базу данных.
-     *
+     * Заполняет экземпляры ApprovedClientEntity и ContractEntity значениями из TransferBidToApproveDTO,
+     * затем сохраняет их в базу данных.
      */
     public void setAndSaveFromBidToContract(TransferBidToApproveDTO transferBidToApproveDTO) {
 
@@ -33,9 +34,9 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         approvedClientEntity.setLastName(transferBidToApproveDTO.getLastName());
         approvedClientEntity.setPassportNum(transferBidToApproveDTO.getPassportNum());
         ApprovedClientEntity includeEntity = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
-        if(includeEntity == null){
+        if (includeEntity == null) {
             approvedClientEntity.setContractEntityList(null);
-        }else{
+        } else {
             approvedClientEntity.setContractEntityList(includeEntity.getContractEntityList());
         }
 
@@ -47,7 +48,8 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
 
         ApprovedClientEntity approvedClientEntitiesByPassportNum = approvedClientRepository.getApprovedClientEntitiesByPassportNum(transferBidToApproveDTO.getPassportNum());
 
-        if (approvedClientEntitiesByPassportNum != null) {
+
+         if (approvedClientEntitiesByPassportNum != null) {
             contractEntity.setApprovedClientEntity(approvedClientEntitiesByPassportNum);
             contractRepository.save(contractEntity);
         } else {
@@ -60,8 +62,7 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
 
 
     /**
-     *  Возвращает сообщение о заключенном кредитном договоре
-     *
+     * Возвращает сообщение о заключенном кредитном договоре
      */
     public String contractResponseMessage(String bidNumber) {
 
@@ -77,7 +78,7 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         String lastName = contractEntityByContractNumber.getApprovedClientEntity().getLastName();
 
         return "Заключён кредитный договор №" + contractNumber + " , дата  " + contractDate + " , сумма " + creditAmount + " руб. на срок "
-                 + creditTerm + " мес. под " + percentYear + "% годовых " + firstName + " " + surName + " " + lastName;
+                + creditTerm + " мес. под " + percentYear + "% годовых " + firstName + " " + surName + " " + lastName;
 
     }
 

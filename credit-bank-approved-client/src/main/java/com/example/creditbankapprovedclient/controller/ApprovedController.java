@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApprovedController {
 
     @Autowired
-    SetFromBidToEntitiesAndSaveService setFromBidToEntitiesAndSaveService;
+    private SetFromBidToEntitiesAndSaveService setFromBidToEntitiesAndSaveService;
 
     @PostMapping("/contract")
     public String saveBidToContract (@RequestBody TransferBidToApproveDTO transferBidToApproveDTO){

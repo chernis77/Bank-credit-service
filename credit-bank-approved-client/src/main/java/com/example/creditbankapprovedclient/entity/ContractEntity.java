@@ -2,15 +2,18 @@ package com.example.creditbankapprovedclient.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 @Table(name="contract_table")
 public class ContractEntity {
     @Id
@@ -94,5 +97,18 @@ public class ContractEntity {
 
     public void setApprovedClientEntity(ApprovedClientEntity approvedClientEntity) {
         this.approvedClientEntity = approvedClientEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContractEntity that = (ContractEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(contractNumber, that.contractNumber) && Objects.equals(creditAmount, that.creditAmount) && Objects.equals(creditTerm, that.creditTerm) && Objects.equals(percentYear, that.percentYear) && Objects.equals(dateContract, that.dateContract) && Objects.equals(approvedClientEntity, that.approvedClientEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, contractNumber, creditAmount, creditTerm, percentYear, dateContract, approvedClientEntity);
     }
 }
