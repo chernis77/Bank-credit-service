@@ -34,10 +34,9 @@ public class TestController {
 
         TestDTO testDTO = new TestDTO();
         testDTO.setFirstMessage(firstMessage);
- //       testDTO.setCheckMessage(secondMessage);
 
         return firstMessage + secondMessage ;
- //       return testDTO.toString();
+
     }
 
 
@@ -47,17 +46,12 @@ public class TestController {
 
         ResponseDTO responseDTO = null;
 
-//        if (form.getFirstName()==null ){
-//            ResponseDTO responseDTO = new ResponseDTO();
-//            responseDTO.setMessage(FIELD_MISSED);
-//            responseDTO.setStatusCode(HttpStatus.);
-//        }
 
         if (form.getFirstName().matches("[^А-Яа-яЁё]") == true) {
             responseDTO = new ResponseDTO();
 
             responseDTO.setMessage("В поле FirstName содержатся некорректные символы");
-            //  responseDTO.setStatusCode(HttpStatus.SC_FORBIDDEN);
+
         }
         if (form.getLastName().matches("[^А-Яа-яЁё]") == true) {
             if (responseDTO == null) {

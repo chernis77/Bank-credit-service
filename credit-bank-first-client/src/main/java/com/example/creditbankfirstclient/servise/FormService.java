@@ -6,8 +6,6 @@ import com.example.creditbankfirstclient.dto.ResponseDTO;
 
 public interface FormService {
 
-//    ResponseDTO fillInForm(String firstName, String lastName);
-
     ResponseDTO validateField(FillFormDTO form);
 
     RequestFormDTO fillInRequestFormDTO(FillFormDTO form);

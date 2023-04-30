@@ -7,5 +7,4 @@ public interface RestTemplateServise {
 
     CheckResponseDTO getResttemplateCheckResponce(RequestFormDTO requestFormDTO);
 
-
 }

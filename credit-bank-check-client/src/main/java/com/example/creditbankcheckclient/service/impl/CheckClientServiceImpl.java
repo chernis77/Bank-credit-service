@@ -26,11 +26,7 @@ import org.springframework.web.client.ResourceAccessException;
 @Service
 public class CheckClientServiceImpl implements CheckClientService {
 
-
-
     private Boolean bankConfirm;
-
-//    private String newBidNumber;
 
     private double percentYear;
 

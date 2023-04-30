@@ -31,7 +31,7 @@ public class PaymentsCalcImpl implements PaymentsCalc{
 
         List<PaymentsSchedule> paymentsScheduleList = new ArrayList<>();
 
-        while (month <=24){
+        while (month <=creditTerm){
 
             PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
 

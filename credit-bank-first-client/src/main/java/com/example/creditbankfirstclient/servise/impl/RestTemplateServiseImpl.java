@@ -6,11 +6,10 @@ import com.example.creditbankfirstclient.resttemplate.FormRestTemplate;
 import com.example.creditbankfirstclient.servise.RestTemplateServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 
 @Service
-public class RestTemplateServiseImpl implements RestTemplateServise {
+public class  RestTemplateServiseImpl implements RestTemplateServise {
 
     @Autowired
     private FormRestTemplate formRestTemplate;

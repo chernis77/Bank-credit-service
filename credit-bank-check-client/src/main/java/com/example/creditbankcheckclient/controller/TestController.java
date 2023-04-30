@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     @Autowired
-    CheckBidRepository checkBidRepository;
+    private CheckBidRepository checkBidRepository;
 
     @Autowired
-    CheckBidEntityMapper checkBidEntityMapper;
+    private CheckBidEntityMapper checkBidEntityMapper;
 
     @Autowired
-    TransferBidToApproveDTOMapper transferBidToApproveDTOMapper;
+    private TransferBidToApproveDTOMapper transferBidToApproveDTOMapper;
 
     @GetMapping("/testmessage")
     public String testMessage(@RequestParam String name){

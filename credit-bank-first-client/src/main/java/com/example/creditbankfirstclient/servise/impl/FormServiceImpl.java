@@ -11,12 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class  FormServiceImpl implements FormService {
 
-
-
-
     @Autowired
     private FormRestTemplate formRestTemplate;
-
 
 
     /**
@@ -115,7 +111,6 @@ public class  FormServiceImpl implements FormService {
             } else if (responseDTO.getMessage() == null) {
                 responseDTO.setMessage("В поле firstName содержатся некорректные символы");
             }
-            //  responseDTO.setStatusCode(HttpStatus.SC_FORBIDDEN);
         }
 
         if (form.getSurName().matches(".*[^А-Яа-яЁё].*") == true) {

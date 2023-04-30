@@ -8,30 +8,21 @@ public class CheckBidDTO {
 
     private String bidNumber;
 
-
     private boolean isEmployed;     // Трудоустроен или нет
-
 
     private int timeOfEmployment;    // Сколько работает на данной работе в месяцах
 
-
     private double salary;
-
 
     private double loanPayments;       // Ежемесячные платежи по другим кредитам
 
-
     private double creditAmount;          //Сумма кредита в рублях
-
 
     private double creditTerm;           //Срок кредита в месяцах - от 12 до 60
 
-
     private double percentYear;
 
-
     private Boolean bankConfirm;    // Согласие банка
-
 
     private Boolean clientConfirm;  // Согласие клиента
 
