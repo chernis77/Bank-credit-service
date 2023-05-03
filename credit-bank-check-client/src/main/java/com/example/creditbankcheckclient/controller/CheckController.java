@@ -24,13 +24,6 @@ public class CheckController {
     @Autowired
     private TakeBidService takeBidService;
 
-
-    @GetMapping("/checkrequest")
-    public String requestTest() {
-
-        return "Метод requestTest из модуля credit-bank-check-client, поля отсутствуют ";
-    }
-
     @GetMapping("/blacklist")
     public boolean blackListRequest(String passportNum) {
         IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();

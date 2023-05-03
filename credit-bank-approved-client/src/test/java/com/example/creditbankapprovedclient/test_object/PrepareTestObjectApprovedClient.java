@@ -2,7 +2,7 @@ package com.example.creditbankapprovedclient.test_object;
 
 import com.example.creditbankapprovedclient.dto.TransferBidToApproveDTO;
 
-public class PrepareTestObjectApprovedClient {
+public class  PrepareTestObjectApprovedClient {
 
 
     public static TransferBidToApproveDTO prepareValidTestObj(){

@@ -24,7 +24,7 @@ import org.springframework.web.client.ResourceAccessException;
  * Если клиента нет в черном списке, работает более 12 мес - одобряем: ежемес.платеж не более: зарплата-кредитная нагрузка-minAmountMoney, 12%
  */
 @Service
-public class CheckClientServiceImpl implements CheckClientService {
+public class  CheckClientServiceImpl implements CheckClientService {
 
     private Boolean bankConfirm;
 

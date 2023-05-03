@@ -14,18 +14,6 @@ public class FormRestTemplate  {
 
     private final String URL = "http://localhost:8097/check/clientresponse";
 
-    private final String URL2 = "http://localhost:8097/check/checkrequest";
-
-    public String getCheckForm(RequestFormDTO requestFormDTO){
-
-     return    restTemplate.exchange(              // restTemplate.exchange() - метод сборки параметров для запроса
-                URL2,                               //путь к методу, куда мы обращаемся
-                HttpMethod.GET,                    //тип запроса
-               new HttpEntity<>(requestFormDTO),  //передача тела запроса и headers
-                String.class                       //тип возвращаемого значения
-        ).getBody();                               // .getBody() - метод для выгрузки запроса
-
-    }
 
     /**
      *  Высылает на credit-bank-check-client экземпляр RequestFormDTO ,

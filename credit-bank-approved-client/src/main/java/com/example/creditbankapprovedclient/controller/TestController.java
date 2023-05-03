@@ -26,11 +26,6 @@ public class TestController {
     ContractShowMapper contractShowMapper;
 
 
-    @GetMapping("/testappmessage" )
-    public String testMessage (@RequestParam String name){
-        return " Это сообщение из модуля credit-bank-approved-client, класс TestController, метод TestMessage() " + name ;
-    }
-
     @PostMapping("/requestmessage")
     public String testRequestMessage(@RequestBody TransferBidToApproveDTO transferBidToApproveDTO){
 

@@ -38,19 +38,6 @@ public class PaymentsCalcImpl implements PaymentsCalc{
             double percentNow = loanBalance * kMonth;               //Выплата по процентам в текущем платеже
             loanBalance = loanBalance + percentNow - monthPayment;
 
-//            if(monthPayment > loanBalance ){
-////               monthPayment = loanBalance;
-//
-//                paymentsSchedule.setMonth(month);
-//                paymentsSchedule.setMonthPayment(loanBalance);
-//                paymentsSchedule.setPercentNow(percentNow);
-//                paymentsSchedule.setLoanBalance(loanBalance);
-//                paymentsSchedule.setTotalOverpayment(totalOverpayment);
-//
-//                paymentsScheduleList.add(paymentsSchedule);
-// //              break;
-//            }
-
             paymentsSchedule.setMonth(month);
             paymentsSchedule.setMonthPayment(Math.round(monthPayment));
             paymentsSchedule.setPercentNow(Math.round(percentNow));
