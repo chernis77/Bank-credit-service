@@ -7,7 +7,6 @@ import com.example.creditbankcheckclient.entity.CheckClientEntity;
 import com.example.creditbankcheckclient.mapper.ClientAndBidMapper;
 import com.example.creditbankcheckclient.repository.CheckBidRepository;
 import com.example.creditbankcheckclient.repository.CheckClientRepository;
-import com.example.creditbankcheckclient.resttemplate.IsInBlackListResttemplate;
 import com.example.creditbankcheckclient.service.CheckClientService;
 import com.example.creditbankcheckclient.service.IsInBlackListResttemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,6 @@ import org.springframework.web.client.ResourceAccessException;
 
 
 /**
- * Если клиент в черном списке и не работает - отказ в кредите.
- * Если клиент в черном списке, но работает более 12мес - одобряем до 50000 на срок от 3 до 5 лет, 22%
- * Если клиента нет в черном списке и не работает - одобряем до 50000 на срок от 3 до 5 лет, 20%
- * Если клиента нет в черном списке, работает до 3 мес - одобряем (зарплата-кредитная нагрузка-minAmountMoney)*0,25 , 17%
- * Если клиента нет в черном списке, работает от 3 до 12 мес - одобряем ежемес.платеж не более: (зарплата-кредитная нагрузка-minAmountMoney)*0,5 , 15%
- * Если клиента нет в черном списке, работает более 12 мес - одобряем: ежемес.платеж не более: зарплата-кредитная нагрузка-minAmountMoney, 12%
  */
 @Service
 public class  CheckClientServiceImpl implements CheckClientService {
@@ -43,18 +36,6 @@ public class  CheckClientServiceImpl implements CheckClientService {
 
     @Autowired
     private IsInBlackListResttemplateService isInBlackListResttemplateService;
-
-
-    /**
-     *  Делает запрос на black-list-servise по номеру паспорта - String passportNum
-     */
-
-    private boolean isInBlackListCheck(String passportNum) {
-
-        IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();
-        boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(passportNum);
-        return inBlackListRequest;
-    }
 
     /**
      *  Вычисляет ежемесячный платеж
@@ -101,27 +82,10 @@ public class  CheckClientServiceImpl implements CheckClientService {
 
         CheckClientEntity checkClientEntity = clientAndBidMapper.dtoToEntity(requestFormDTO);
 
-//        checkClientEntity.setFirstName(requestFormDTO.getFirstName());
-//        checkClientEntity.setSurName(requestFormDTO.getSurName());
-//        checkClientEntity.setLastName(requestFormDTO.getLastName());
-//        checkClientEntity.setPassportNum(requestFormDTO.getPassportNum());
-
         CheckBidEntity checkBidEntity = clientAndBidMapper.dtoToEntity(requestFormDTO, percentYear, bankConfirm);
         checkBidEntity.setBidNumber(getNewBidNumber());
-//        checkBidEntity.setEmployed(requestFormDTO.isEmployed());
-//        checkBidEntity.setTimeOfEmployment(requestFormDTO.getTimeOfEmployment());
-//        checkBidEntity.setSalary(requestFormDTO.getSalary());
-//        checkBidEntity.setLoanPayments(requestFormDTO.getLoanPayments());
-//        checkBidEntity.setCreditAmount(requestFormDTO.getCreditAmount());
-//        checkBidEntity.setCreditTerm(requestFormDTO.getCreditTerm());
-//        checkBidEntity.setPercentYear(percentYear);
-//        checkBidEntity.setBankConfirm(bankConfirm);
-//        checkBidEntity.setClientConfirm(null);
-
 
         CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
-
-        Long idClient;
 
         if (checkClientEntityByPassportNum != null) {
             if ( checkFields(checkClientEntity, checkClientEntityByPassportNum)) {
@@ -138,7 +102,6 @@ public class  CheckClientServiceImpl implements CheckClientService {
             checkBidEntity.setCheckClientEntity(persistedEntity);
             checkBidRepository.save(checkBidEntity);
         }
-
     }
 
     /**
@@ -173,8 +136,6 @@ public class  CheckClientServiceImpl implements CheckClientService {
         double creditTerm = requestFormDTO.getCreditTerm();
 
         CheckResponseDTO checkResponseDTO = new CheckResponseDTO();
-//        CheckBidEntity topByOrderByIdDesc = checkBidRepository.getTopByOrderByIdDesc();
-//        String bidNumber = topByOrderByIdDesc.getBidNumber();
 
         boolean blackListResponse;
         try {
@@ -187,19 +148,9 @@ public class  CheckClientServiceImpl implements CheckClientService {
             return checkResponseDTO;
         }
 
-
-
-
-//        boolean isInBlackList = isInBlackListCheck(requestFormDTO.getPassportNum());
-
-//        double monthPayment = monthlyPayment(creditAmount, creditTerm, percentYear);
-
         double maxMonthPayment = salary - loanPayments - MIN_AMOUNT_MONEY;
 
         double maxCreditAmount = maxMonthPayment * creditTerm;
-
-
-
 
 
         if (blackListResponse == true && isEmployed == false) {
@@ -259,7 +210,6 @@ public class  CheckClientServiceImpl implements CheckClientService {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
                         creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
                         "номер заявки - " + bidNumber);
-
             }
 
         } else if (blackListResponse == false && isEmployed == true && timeOfEmployment > 12) {
@@ -282,8 +232,6 @@ public class  CheckClientServiceImpl implements CheckClientService {
                 checkResponseDTO.setMessage("Вам одобрен кредит на сумму " + creditAmount + " рублей на срок " +
                         creditTerm + " мес. под " + percentYear + "% годовых, ежемесячный платеж " + monthPayment + " рублей, " +
                         "номер заявки - " + bidNumber);
-
-
             }
         }
         return checkResponseDTO;

@@ -24,14 +24,6 @@ public class CheckController {
     @Autowired
     private TakeBidService takeBidService;
 
-    @GetMapping("/blacklist")
-    public boolean blackListRequest(String passportNum) {
-        IsInBlackListResttemplate isInBlackListResttemplate = new IsInBlackListResttemplate();
-        boolean inBlackListRequest = isInBlackListResttemplate.isInBlackListRequest(passportNum);
-        return inBlackListRequest;
-
-    }
-
     /**
      *  Получает с credit-bank-first-client форму заявки RequestFormDTO.
      *
@@ -48,7 +40,8 @@ public class CheckController {
     /**
      *  Получает от клиента номер заявки, существующей в checkbid_table.
      *  В случае, если в checkbid_table в поле bank_confirm установлено значение true,
-     *  устанавливает true в поле client_confirm и отправляет 
+     *  устанавливает true в поле client_confirm и отправляет TransferBidToApproveDTO на credit-bank-approved-client.
+     *  Возвращает сообщение о заключении кредитного договора.
      */
 
     @PostMapping("/contractmessage")

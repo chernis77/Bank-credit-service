@@ -17,12 +17,4 @@ public interface ClientAndBidMapper {
 //  @Mapping(target = "bidNumber", source = getNewBidNumber() )
   CheckBidEntity dtoToEntity(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm);
 
-
-
-
 }
-
-//         checkBidEntity.setPercentYear(percentYear);
-//        checkBidEntity.setBankConfirm(bankConfirm);
-//        checkBidEntity.setClientConfirm(null);
-//         checkBidEntity.setBidNumber(newBidNumber);

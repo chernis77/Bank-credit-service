@@ -28,23 +28,6 @@ public class ToApprovedClientResttemplateServiceImpl implements ToApprovedClient
             contractMessage = "Проблемы с сервисом контрактов " + ex.getMessage();
             return contractMessage;
         }
-
     }
-
 }
 
-//    public CheckResponseDTO getResttemplateCheckResponce(RequestFormDTO requestFormDTO) {
-//        CheckResponseDTO checkResponseDTO = new CheckResponseDTO();
-//
-//        try {
-//            checkResponseDTO = formRestTemplate.getCheckResponse(requestFormDTO);
-//            if (checkResponseDTO.getMessage() != null) return checkResponseDTO;
-//            throw new NullPointerException();
-//        } catch (ResourceAccessException ex) {
-//            checkResponseDTO.setMessage(ex.getLocalizedMessage());
-//            return checkResponseDTO;
-//        } catch (NullPointerException ex) {
-//            checkResponseDTO.setMessage("Проблемы с сервисом проверки " + ex.getMessage());
-//            return checkResponseDTO;
-//        }
-//    }

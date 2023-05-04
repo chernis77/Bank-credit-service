@@ -7,7 +7,4 @@ public interface CheckClientService {
 
     CheckResponseDTO checkFormClient(RequestFormDTO requestFormDTO);
 
-
-
-
 }
