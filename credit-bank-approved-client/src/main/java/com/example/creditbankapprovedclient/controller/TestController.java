@@ -20,28 +20,7 @@ public class TestController {
     ContractRepository contractRepository;
 
     @Autowired
-    PaymentsCalc paymentsCalc;
-
-    @Autowired
     ContractShowMapper contractShowMapper;
-
-
-    @PostMapping("/requestmessage")
-    public String testRequestMessage(@RequestBody TransferBidToApproveDTO transferBidToApproveDTO){
-
-        String bidNumber = transferBidToApproveDTO.getBidNumber();
-        String firstName = transferBidToApproveDTO.getFirstName();
-        String surName = transferBidToApproveDTO.getSurName();
-        String lastName = transferBidToApproveDTO.getLastName();
-        String passportNum = transferBidToApproveDTO.getPassportNum();
-        Double creditAmount = transferBidToApproveDTO.getCreditAmount();
-        Double creditTerm = transferBidToApproveDTO.getCreditTerm();
-        Double percentYear = transferBidToApproveDTO.getPercentYear();
-
-        return "Заявка " + bidNumber + " " + firstName + " " + surName + " " + lastName +" паспотрт№ " + passportNum + " "
-                + creditAmount + " руб, срок " + creditTerm + " под " + percentYear + "%" ;
-
-    }
 
     @PostMapping("/contractinfo/{contractNumber}")
     public @ResponseBody ContractShowDTO getContractInfo(@PathVariable String contractNumber ){
@@ -49,8 +28,6 @@ public class TestController {
         ContractEntity contractEntityByContractNumber = contractRepository.getContractEntityByContractNumber(contractNumber);
 
         ContractShowDTO contractShowDTO = contractShowMapper.getContractShowDTO(contractEntityByContractNumber);
-
-//        List<PaymentsSchedule> paymentsSchedule = paymentsCalc.getPaymentsSchedule(contractEntityByContractNumber);
 
         return  contractShowDTO;
 

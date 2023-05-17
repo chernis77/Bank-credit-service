@@ -19,7 +19,6 @@ import java.time.LocalDate;
 
 import static com.example.creditbankapprovedclient.constantlist.ApprovedClientConstants.*;
 import static com.example.creditbankapprovedclient.test_object.PrepareTestObjectApprovedClient.prepareValidTestObj;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc

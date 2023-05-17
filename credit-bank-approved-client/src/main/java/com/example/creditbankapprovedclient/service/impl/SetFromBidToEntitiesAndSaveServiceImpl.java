@@ -60,7 +60,6 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
         }
     }
 
-
     /**
      * Возвращает сообщение о заключенном кредитном договоре
      */
@@ -81,5 +80,4 @@ public class SetFromBidToEntitiesAndSaveServiceImpl implements SetFromBidToEntit
                 + creditTerm + " мес. под " + percentYear + "% годовых " + firstName + " " + surName + " " + lastName;
 
     }
-
 }

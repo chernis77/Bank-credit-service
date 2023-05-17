@@ -8,8 +8,6 @@ public class ContractShowDTO {
 
     private String contractNumber;
 
-    private String contractDate;
-
     private String firstName;
 
     private String surName;
@@ -26,6 +24,8 @@ public class ContractShowDTO {
 
     private String dateContract;
 
+    private List<PaymentsSchedule> paymentsScheduleList;
+
     public String getDateContract() {
         return dateContract;
     }
@@ -34,22 +34,12 @@ public class ContractShowDTO {
         this.dateContract = dateContract;
     }
 
-    private List<PaymentsSchedule> paymentsScheduleList;
-
     public String getContractNumber() {
         return contractNumber;
     }
 
     public void setContractNumber(String contractNumber) {
         this.contractNumber = contractNumber;
-    }
-
-    public String getContractDate() {
-        return contractDate;
-    }
-
-    public void setContractDate(String contractDate) {
-        this.contractDate = contractDate;
     }
 
     public String getFirstName() {

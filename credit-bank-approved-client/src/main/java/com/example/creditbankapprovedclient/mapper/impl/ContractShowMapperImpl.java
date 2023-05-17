@@ -38,7 +38,5 @@ public class ContractShowMapperImpl implements ContractShowMapper {
 //        contractShowDTO.setPaymentsScheduleList(paymentsScheduleList);
 
         return contractShowMapstruct.getContractShowDTO(contractEntity, paymentsCalc.getPaymentsSchedule(contractEntity));
-
     }
-
 }
