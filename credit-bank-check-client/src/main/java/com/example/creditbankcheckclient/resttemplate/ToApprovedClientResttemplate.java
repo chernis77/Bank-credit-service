@@ -11,7 +11,7 @@ public class ToApprovedClientResttemplate {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    private final String URL = "http://localhost:8098/approved/contract";
+    private final String URL = "http://localhost:8099/approved/contract";
 
     public String sendBidToApprovedClient(TransferBidToApproveDTO transferBidToApproveDTO ){
 

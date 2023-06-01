@@ -12,7 +12,7 @@ public class IsInBlackListResttemplate {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    private final String URL = "http://localhost:8090/blacklist/check?passportNum=%s";
+    private final String URL = "http://localhost:8099/blacklist/check?passportNum=%s";
 
     public boolean isInBlackListRequest(String passportNum) {
 
