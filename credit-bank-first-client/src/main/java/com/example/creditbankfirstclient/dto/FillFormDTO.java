@@ -18,7 +18,7 @@ public class FillFormDTO {
 
     private String salary;
 
-    private  String loanPayments;       // Ежемесячные платежи по другим кредитам
+    private String loanPayments;       // Ежемесячные платежи по другим кредитам
 
     private String creditAmount;          //Сумма кредита в рублях
 

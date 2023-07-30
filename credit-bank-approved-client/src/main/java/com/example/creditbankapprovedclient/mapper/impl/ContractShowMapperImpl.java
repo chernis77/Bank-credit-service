@@ -5,13 +5,8 @@ import com.example.creditbankapprovedclient.entity.ContractEntity;
 import com.example.creditbankapprovedclient.mapper.ContractShowMapper;
 import com.example.creditbankapprovedclient.mapper.ContractShowMapstruct;
 import com.example.creditbankapprovedclient.service.PaymentsCalc;
-import com.example.creditbankapprovedclient.service.PaymentsSchedule;
-import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ContractShowMapperImpl implements ContractShowMapper {
@@ -26,6 +21,7 @@ public class ContractShowMapperImpl implements ContractShowMapper {
 
 //        ContractShowDTO contractShowDTO = new ContractShowDTO();
 //        List<PaymentsSchedule> paymentsScheduleList = paymentsCalc.getPaymentsSchedule(contractEntity);
+
 
 //        contractShowDTO.setContractNumber(contractEntity.getContractNumber());
 //        contractShowDTO.setFirstName(contractEntity.getApprovedClientEntity().getFirstName());

@@ -6,6 +6,8 @@ import java.util.List;
 
 public class ContractShowDTO {
 
+    private String startMessage;
+
     private String contractNumber;
 
     private String firstName;
@@ -25,6 +27,14 @@ public class ContractShowDTO {
     private String dateContract;
 
     private List<PaymentsSchedule> paymentsScheduleList;
+
+    public String getStartMessage() {
+        return startMessage;
+    }
+
+    public void setStartMessage(String startMessage) {
+        this.startMessage = startMessage;
+    }
 
     public String getDateContract() {
         return dateContract;

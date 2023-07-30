@@ -15,9 +15,10 @@ import org.springframework.web.client.ResourceAccessException;
 
 
 /**
+ *
  */
 @Service
-public class  CheckClientServiceImpl implements CheckClientService {
+public class CheckClientServiceImpl implements CheckClientService {
 
     private Boolean bankConfirm;
 
@@ -32,13 +33,13 @@ public class  CheckClientServiceImpl implements CheckClientService {
     private CheckClientRepository checkClientRepository;
 
     @Autowired
-    private ClientAndBidMapper clientAndBidMapper ;
+    private ClientAndBidMapper clientAndBidMapper;
 
     @Autowired
     private IsInBlackListResttemplateService isInBlackListResttemplateService;
 
     /**
-     *  Вычисляет ежемесячный платеж
+     * Вычисляет ежемесячный платеж
      */
 
     private double monthlyPayment(double creditAmount, double creditTerm, double percentYear) {
@@ -50,7 +51,7 @@ public class  CheckClientServiceImpl implements CheckClientService {
     }
 
     /**
-     *   Возвращает новый номер заявки - запрашивет из базы данных последний номер заявки и увеличивает на 1
+     * Возвращает новый номер заявки - запрашивет из базы данных последний номер заявки и увеличивает на 1
      */
 
     public String getNewBidNumber() {
@@ -73,9 +74,9 @@ public class  CheckClientServiceImpl implements CheckClientService {
     }
 
     /**
-     *   Заполняет экземпляры CheckClientEntity и CheckBidEntity
-     *   на основе requestFormDTO, percentYear - годовой процентной ставки и bankConfirm - подтверждения/отказа банка
-     *   и сохраняет записи, соответственно, в checkclient_table и checkbid_table
+     * Заполняет экземпляры CheckClientEntity и CheckBidEntity
+     * на основе requestFormDTO, percentYear - годовой процентной ставки и bankConfirm - подтверждения/отказа банка
+     * и сохраняет записи, соответственно, в checkclient_table и checkbid_table
      */
 
     private void clientAndBidEntitiesSet(RequestFormDTO requestFormDTO, double percentYear, boolean bankConfirm) {
@@ -88,12 +89,13 @@ public class  CheckClientServiceImpl implements CheckClientService {
         CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
 
         if (checkClientEntityByPassportNum != null) {
-            if ( checkFields(checkClientEntity, checkClientEntityByPassportNum)) {
+            if (checkFields(checkClientEntity, checkClientEntityByPassportNum)) {
                 checkBidEntity.setCheckClientEntity(checkClientEntityByPassportNum);
                 checkBidRepository.save(checkBidEntity);
 
             } else {
                 throw new RuntimeException(checkByPassportNumMessage());
+
             }
 
         } else {
@@ -102,28 +104,39 @@ public class  CheckClientServiceImpl implements CheckClientService {
             checkBidEntity.setCheckClientEntity(persistedEntity);
             checkBidRepository.save(checkBidEntity);
         }
+
     }
 
     /**
-     *   В случае, если в checkclient_table уже содержится клиент с таким же номером паспорта passportNum как в checkClientEntity,
-     *   проверяет соответствие имени, отчества и фамилии и номера паспорта в заявке и в checkclient_table
+     * В случае, если в checkclient_table уже содержится клиент с таким же номером паспорта passportNum как в checkClientEntity,
+     * проверяет соответствие имени, отчества и фамилии и номера паспорта в заявке и в checkclient_table
      */
 
-    private boolean checkFields(CheckClientEntity checkClientEntity, CheckClientEntity checkClientEntityByPassportNum) {
+    private boolean checkFields(CheckClientEntity checkClientEntity, CheckClientEntity
+            checkClientEntityByPassportNum) {
 
         return checkClientEntity.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
                 && checkClientEntity.getSurName().equals(checkClientEntityByPassportNum.getSurName())
                 && checkClientEntity.getLastName().equals(checkClientEntityByPassportNum.getLastName());
     }
 
+    private boolean checkFields(RequestFormDTO requestFormDTO, CheckClientEntity
+            checkClientEntityByPassportNum) {
+
+        return requestFormDTO.getFirstName().equals(checkClientEntityByPassportNum.getFirstName())
+                && requestFormDTO.getSurName().equals(checkClientEntityByPassportNum.getSurName())
+                && requestFormDTO.getLastName().equals(checkClientEntityByPassportNum.getLastName());
+    }
+
+
     /**
-     *  В соответствии с данными из requestFormDTO и запроса в black-list-service,
-     *  выдает либо отказ, либо согласие на выдачу кредита,
-     *  в зависимости от данных из requestFormDTO предлагается годовая процентная ставка.
-     *  Как в случае отказа, так и в случае согласия банка, производится запись в checkclient_table и checkbid_table.
-     *  В случае, если запрашиваемая клиентом сумма выше, чем одобряет банк, запись в БД не производится,
-     *  а клиенту предлагаются возможные для его случая условия.
-     *  Во всех случаях возвращает CheckResponseDTO с ответом на заявку.
+     * В соответствии с данными из requestFormDTO и запроса в black-list-service,
+     * выдает либо отказ, либо согласие на выдачу кредита,
+     * в зависимости от данных из requestFormDTO предлагается годовая процентная ставка.
+     * В случае согласия банка, производится запись в checkclient_table и checkbid_table.
+     * В случае, если запрашиваемая клиентом сумма выше, чем одобряет банк, запись в БД не производится,
+     * а клиенту предлагаются возможные для его случая условия.
+     * Во всех случаях возвращает CheckResponseDTO с ответом на заявку.
      */
 
     public CheckResponseDTO checkFormClient(RequestFormDTO requestFormDTO) {
@@ -137,26 +150,36 @@ public class  CheckClientServiceImpl implements CheckClientService {
 
         CheckResponseDTO checkResponseDTO = new CheckResponseDTO();
 
+
         boolean blackListResponse;
         try {
             blackListResponse = isInBlackListResttemplateService.getBlackListResponse(requestFormDTO.getPassportNum());
-        } catch (NullPointerException ex ){
+        } catch (NullPointerException ex) {
             checkResponseDTO.setMessage("Null ответ с BlackListService");
             return checkResponseDTO;
-        } catch (ResourceAccessException ex){
-            checkResponseDTO.setMessage("Нет доступа к BlackListService" );
+        } catch (ResourceAccessException ex) {
+            checkResponseDTO.setMessage("Нет доступа к BlackListService");
             return checkResponseDTO;
         }
 
+        double kMonth = percentYear / 12 / 100;
+        double stavkaobsh = Math.pow((1 + kMonth), creditTerm);
+
         double maxMonthPayment = salary - loanPayments - MIN_AMOUNT_MONEY;
 
-        double maxCreditAmount = maxMonthPayment * creditTerm;
+        double maxCreditAmount = Math.floor(maxMonthPayment * (stavkaobsh - 1) / (kMonth * stavkaobsh));
+
+        CheckClientEntity checkClientEntityByPassportNum = checkClientRepository.getCheckClientEntityByPassportNum(requestFormDTO.getPassportNum());
 
 
         if (blackListResponse == true && isEmployed == false) {
 
             checkResponseDTO.setMessage("Вам отказано в кредите - у Вас плохая кредитная история и Вы не трудоустроены");
 
+
+        } else if (blackListResponse == true && isEmployed == true && timeOfEmployment < 12) {
+
+            checkResponseDTO.setMessage("Вам отказано в кредите - у Вас плохая кредитная история и срок Вашей трудовой деятельности недостаточный");
 
         } else if (blackListResponse == true && isEmployed == true && timeOfEmployment >= 12 && maxMonthPayment >= 5000) {
 
@@ -178,6 +201,9 @@ public class  CheckClientServiceImpl implements CheckClientService {
                 checkResponseDTO.setMessage("На срок " + creditTerm + " мес. " + "Вам доступна сумма не более" +
                         maxCreditAmount + " под " + percentYear + "% годовых");
 
+            } else if ( checkClientEntityByPassportNum != null
+                    &&  checkFields(requestFormDTO, checkClientEntityByPassportNum) == false ) {
+                checkResponseDTO.setMessage("Фамилия, имя или отчество не соответствуют номеру паспорта, зарегистрированного в базе данных Банка" );
             } else {
                 bankConfirm = true;
                 clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
@@ -201,6 +227,9 @@ public class  CheckClientServiceImpl implements CheckClientService {
                 checkResponseDTO.setMessage("На срок " + creditTerm + " мес. " + "Вам доступна сумма не более" +
                         maxCreditAmount + " под " + percentYear + "% годовых");
 
+            }else if ( checkClientEntityByPassportNum != null
+                    &&  checkFields(requestFormDTO, checkClientEntityByPassportNum) == false ) {
+                checkResponseDTO.setMessage("Фамилия, имя или отчество не соответствуют номеру паспорта, зарегистрированного в базе данных Банка" );
             } else {
                 bankConfirm = true;
                 clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);
@@ -222,6 +251,9 @@ public class  CheckClientServiceImpl implements CheckClientService {
                 checkResponseDTO.setMessage("На срок " + creditTerm + " мес. " + "Вам доступна сумма не более" +
                         maxCreditAmount + " под " + percentYear + "% годовых");
 
+            } else if ( checkClientEntityByPassportNum != null
+                    &&  checkFields(requestFormDTO, checkClientEntityByPassportNum) == false ) {
+                checkResponseDTO.setMessage("Фамилия, имя или отчество не соответствуют номеру паспорта, зарегистрированного в базе данных Банка" );
             } else {
                 bankConfirm = true;
                 clientAndBidEntitiesSet(requestFormDTO, percentYear, bankConfirm);

@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ContractShowMapstruct {
 
+ //   @Mapping(target = "startMessage", defaultExpression = "fdsa");
     @Mapping(target = "firstName", source = "contractEntity.approvedClientEntity.firstName")
     @Mapping(target = "surName", source = "contractEntity.approvedClientEntity.surName")
     @Mapping(target = "lastName", source = "contractEntity.approvedClientEntity.lastName")

@@ -3,9 +3,9 @@ package com.example.creditbankapprovedclient.service.impl;
 import com.example.creditbankapprovedclient.entity.ContractEntity;
 import com.example.creditbankapprovedclient.service.PaymentsCalc;
 import com.example.creditbankapprovedclient.service.PaymentsSchedule;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +31,19 @@ public class PaymentsCalcImpl implements PaymentsCalc{
 
         List<PaymentsSchedule> paymentsScheduleList = new ArrayList<>();
 
+        LocalDate dateOfPayment = LocalDate.now();
+
         while (month <=creditTerm){
 
             PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
+
+            dateOfPayment = dateOfPayment.plusMonths(1);
 
             double percentNow = loanBalance * kMonth;               //Выплата по процентам в текущем платеже
             loanBalance = loanBalance + percentNow - monthPayment;
 
             paymentsSchedule.setMonth(month);
+            paymentsSchedule.setPaymentDate(dateOfPayment.toString());
             paymentsSchedule.setMonthPayment(Math.round(monthPayment));
             paymentsSchedule.setPercentNow(Math.round(percentNow));
             paymentsSchedule.setLoanBalance(Math.round(loanBalance));

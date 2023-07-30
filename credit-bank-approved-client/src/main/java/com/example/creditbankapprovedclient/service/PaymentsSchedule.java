@@ -2,10 +2,22 @@ package com.example.creditbankapprovedclient.service;
 
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @ToString
 public class PaymentsSchedule {
 
     private int month;
+
+    private String paymentDate;
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
+    }
 
     private double monthPayment;
 
