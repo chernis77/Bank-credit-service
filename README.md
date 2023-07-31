@@ -65,7 +65,7 @@ String creditTerm - запрашиваемый срок кредита, мес. 
 
 >Таблица blacklist_table:<br/>
 > 
-![](/images/Blacklist_table_annot.jpg)<br/>
+![](/images/Blacklist_table_annot.JPG)<br/>
 
 Если клиент находится в БД на ***black-list-service***, а также не трудоустроен, выдется отказ в кредите:<br/>
 ![Отказ в кредите](/images/Denial_of_credit.JPG)<br/>
