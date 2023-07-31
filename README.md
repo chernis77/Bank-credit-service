@@ -87,7 +87,7 @@ String creditTerm - запрашиваемый срок кредита, мес. 
 
 >checkbid_table  :<br/>
 >
-![](/images/Checkbid_table_1 annot.JPG)<br/>
+![](/images/Checkbid_table_1_annot.JPG)<br/>
 при этом, в ячейке bank_confirm установлено значение true, а в client_confirm - null. Значение номера заявки 
 в ячейке bidNumber увеличивается на единицу по отношению к значению в предыдущей строке.<br/>
 
