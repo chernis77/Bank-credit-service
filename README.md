@@ -119,7 +119,7 @@ contract_table и в approvedclient_table и, таким образом, рег�
 
 >approvedclient_table:<br/>
 
-![](/images/Approvedclient_table_annot.JPG)<br/>
+![](/images/Approvedclient_table_annot_.JPG)<br/>
 
 Выводится сообщение о заключенном кредитном договоре:<br/>
 
